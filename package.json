@@ -21,6 +21,7 @@
     "test:int": "jest test/integration"
   },
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "ts-custom-error": "^3.1.1"
   }
 }

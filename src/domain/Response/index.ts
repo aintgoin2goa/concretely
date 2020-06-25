@@ -1,1 +1,1 @@
-export {Response} from './Response';
+export {Response, Headers} from './Response';
