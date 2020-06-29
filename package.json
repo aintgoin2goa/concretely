@@ -1,27 +1,32 @@
 {
-  "name": "concretely",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:aintgoin2goa/concretely.git",
-  "author": "Paul Wilson <paul.wilson@ktech.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^26.0.0",
-    "@types/node": "^14.0.13",
-    "@types/node-fetch": "^2.5.7",
-    "jest": "^26.0.1",
-    "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5"
-  },
-  "jest": {
-    "preset": "ts-jest"
-  },
-  "scripts": {
-    "test:unit": "jest src",
-    "test:int": "jest test/integration"
-  },
-  "dependencies": {
-    "node-fetch": "^2.6.0",
-    "ts-custom-error": "^3.1.1"
-  }
+    "name": "concretely",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:aintgoin2goa/concretely.git",
+    "author": "Paul Wilson <paul.wilson@ktech.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/deep-equal": "^1.0.1",
+        "@types/jest": "^26.0.0",
+        "@types/node": "^14.0.13",
+        "@types/node-fetch": "^2.5.7",
+        "@types/object-path": "^0.11.0",
+        "jest": "^26.0.1",
+        "ts-jest": "^26.1.0",
+        "typescript": "^3.9.5"
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "rootDir": "src"
+    },
+    "scripts": {
+        "test:unit": "jest src",
+        "test:int": "jest --config test/integration/jest.config.js"
+    },
+    "dependencies": {
+        "deep-equal": "^2.0.3",
+        "node-fetch": "^2.6.0",
+        "object-path": "^0.11.4",
+        "ts-custom-error": "^3.1.1"
+    }
 }

@@ -1,5 +1,4 @@
-
-export enum ComparisonOperators{
+export enum ComparisonOperators {
     EQUALS = 'EQUALS',
     INCLUDES = 'INCLUDES',
     MATCHES = 'MATCHES',
@@ -11,32 +10,32 @@ export enum ComparisonOperators{
 export type HeaderExpectation = {
     name: string;
     operator: ComparisonOperators;
-    value: string;   
-}
+    value: string;
+};
 
 type BodyStringExpection = {
     operator: ComparisonOperators;
     value: string;
-}
+};
 
-type BodyJsonExpection = {
+export type BodyJsonExpectation = {
     operator: ComparisonOperators;
     path: string;
     value: any;
-}
+};
 
-type BodyExpectation = {
+export type BodyExpectation = {
     string?: BodyStringExpection[];
-    json?: BodyJsonExpection[];
-}
+    json?: BodyJsonExpectation[];
+};
 
 export type StatusExpectation = {
     operator: ComparisonOperators;
     expected: number | string;
-}
+};
 
 export type Expectation = {
     status?: StatusExpectation;
     headers?: HeaderExpectation[];
     body?: BodyExpectation;
-}
+};

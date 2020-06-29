@@ -1,4 +1,4 @@
-import { Expectation, ExpectionFailedError } from './';
+import { Expectation, ExpectionFailedError } from '.';
 import { Response } from '../Response';
 import assertStatus from './assertations/status';
 import assertHeader from './assertations/header';

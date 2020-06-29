@@ -1,5 +1,5 @@
 import {Expectation, StatusExpectation, HeaderExpectation} from './expectation';
-import * as ExpectationService from './service';
+import * as ExpectationService from './expectation-service';
 import ExpectionFailedError from './ExpectationFailed';
 
 export {

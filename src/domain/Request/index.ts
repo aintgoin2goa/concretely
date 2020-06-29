@@ -1,8 +1,3 @@
-import * as RequestService from './service';
+import * as RequestService from './request-service';
 import { Request } from './Request';
-export {
-    Request,
-    RequestService
-};
-
-
+export { Request, RequestService };
