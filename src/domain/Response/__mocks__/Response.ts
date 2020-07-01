@@ -1,7 +1,7 @@
 import { Response } from '../Response';
 import { Response as FetchResponse, ResponseInit } from 'node-fetch';
 
-type SyntheticResponseInput = {
+export type SyntheticResponseInput = {
     body?: string;
     status?: number;
     headers?: { [key: string]: string };

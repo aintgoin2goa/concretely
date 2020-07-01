@@ -20,7 +20,7 @@
         "rootDir": "src"
     },
     "scripts": {
-        "test:unit": "jest src",
+        "test:unit": "jest",
         "test:int": "jest --config test/integration/jest.config.js"
     },
     "dependencies": {

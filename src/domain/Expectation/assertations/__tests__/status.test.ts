@@ -78,22 +78,24 @@ describe('Status Assertation', () => {
     describe('Expectation config', () => {
         describe('if operator is MATCHES and expected is a number', () => {
             it('should throw a TypeError', () => {
-                const assert = assertStatus({
-                    operator: ComparisonOperators.MATCHES,
-                    expected: 200,
-                });
                 const response = makeResponse(200);
-                expect(() => assert(response)).toThrow(TypeError);
+                expect(() =>
+                    assertStatus({
+                        operator: ComparisonOperators.MATCHES,
+                        expected: 200,
+                    }),
+                ).toThrow(TypeError);
             });
         });
         describe('if operator is EQUALS and expected is a string', () => {
             it('should throw a TypeError', () => {
-                const assert = assertStatus({
-                    operator: ComparisonOperators.EQUALS,
-                    expected: '2xx',
-                });
                 const response = makeResponse(200);
-                expect(() => assert(response)).toThrow(TypeError);
+                expect(() =>
+                    assertStatus({
+                        operator: ComparisonOperators.EQUALS,
+                        expected: '2xx',
+                    }),
+                ).toThrow(TypeError);
             });
         });
     });
