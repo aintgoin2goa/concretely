@@ -1,4 +1,4 @@
-import { RequestService, Request } from '../../Request';
+import { RequestService } from '../../Request';
 import { Response } from '../../Response';
 import {
     syntheticResponse,
@@ -11,7 +11,7 @@ import { Test, TestResult, TestService } from '../';
 import { ComparisonOperators } from '../../Expectation/expectation';
 import { ExpectionFailedError } from '../../Expectation';
 
-type TestCase = [Test, Response, TestResult];
+type TestCase = [string, Test, Response, TestResult];
 
 const buildTestCaseTest = (test: Partial<Test> = {}): Test => {
     const defaultTest: Test = {
@@ -55,6 +55,7 @@ const buildTestCaseResult = (
 };
 
 const buildTestCase = (
+    name: string,
     testOverrides: Partial<Test> = {},
     responseOverrides: Partial<SyntheticResponseInput> = {},
     resultOverrides: Partial<TestResult> = {},
@@ -62,7 +63,7 @@ const buildTestCase = (
     const test = buildTestCaseTest(testOverrides);
     const response = buildTestCaseResponse(responseOverrides);
     const result = buildTestCaseResult(resultOverrides, test);
-    return [test, response, result];
+    return [name, test, response, result];
 };
 
 describe('Test service', () => {
@@ -70,8 +71,9 @@ describe('Test service', () => {
         jest.restoreAllMocks();
     });
     const testCases: TestCase[] = [
-        buildTestCase(),
+        buildTestCase('simple status match expectation'),
         buildTestCase(
+            'status expectation fails',
             {},
             { status: 404 },
             {
@@ -88,6 +90,7 @@ describe('Test service', () => {
             },
         ),
         buildTestCase(
+            'multiple header and body expectations',
             {
                 expectation: {
                     status: {
@@ -143,14 +146,58 @@ describe('Test service', () => {
             },
         ),
     ];
-    describe.each(testCases)('%o', (testConfig, response, expectedResult) => {
-        it(`should execute a test and return the result : ${
-            expectedResult.passed ? 'PASSED' : 'FAILED'
-        }`, async () => {
-            sendRequestSpy.mockResolvedValueOnce(response);
-            const result = await TestService.execute(testConfig);
-            console.log(result);
-            expect(result).toEqual(expectedResult);
+    describe.each(testCases)(
+        '%s',
+        (_, testConfig, response, expectedResult) => {
+            it(`should execute a test and return the result : ${
+                expectedResult.passed ? 'PASSED' : 'FAILED'
+            }`, async () => {
+                sendRequestSpy.mockResolvedValueOnce(response);
+                const result = await TestService.execute(testConfig);
+                expect(result).toEqual(expectedResult);
+            });
+        },
+    );
+
+    describe('Hooks', () => {
+        it('should execute before and after hooks in the correct order', async () => {
+            const fakeResponse = syntheticResponse({ status: 200 });
+            sendRequestSpy.mockReset();
+            sendRequestSpy
+                .mockResolvedValueOnce(fakeResponse)
+                .mockResolvedValueOnce(fakeResponse)
+                .mockResolvedValueOnce(fakeResponse);
+            const test: Test = {
+                name: 'hook test',
+                before: {
+                    request: {
+                        method: 'GET',
+                        url: '/before_url',
+                    },
+                    save: {},
+                },
+                request: {
+                    method: 'GET',
+                    url: '/url',
+                },
+                expectation: {
+                    status: {
+                        operator: ComparisonOperators.MATCHES,
+                        expected: '2XX',
+                    },
+                },
+                after: {
+                    request: {
+                        method: 'GET',
+                        url: '/after_url',
+                    },
+                    save: {},
+                },
+            };
+            await TestService.execute(test);
+            expect(sendRequestSpy).nthCalledWith(1, test.before!.request);
+            expect(sendRequestSpy).nthCalledWith(2, test.request);
+            expect(sendRequestSpy).nthCalledWith(3, test.after!.request);
         });
     });
 });

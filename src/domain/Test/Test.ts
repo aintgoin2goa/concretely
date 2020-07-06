@@ -1,4 +1,5 @@
 import { Request } from '../Request';
+import { Hook } from '../Hook';
 import { Expectation, ExpectionFailedError } from '../Expectation';
 
 export type Save = {
@@ -7,6 +8,8 @@ export type Save = {
 
 export type Test = {
     name: string;
+    before?: Hook;
+    after?: Hook;
     request: Request;
     expectation: Expectation;
 };
